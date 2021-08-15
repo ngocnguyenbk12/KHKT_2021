@@ -1,0 +1,118 @@
+<!DOCTYPE html> 
+  <html>
+   <head> 
+       <title>HOME PAGE</title> 
+       <style> 
+          body {text-align:center;}
+          h1 {color:#003399;}
+          a {text-decoration: none;color:#FFFFFF;}
+      
+          .bt_1 {
+            height:50px; 
+            width:100px; 
+            margin:10px 0;
+            background-color:#FF0F9F;
+            border-radius:5px;
+          }
+          .bt_2 {
+            height:50px; 
+            width:100px; 
+            margin:10px 0;
+            background-color:#00FF00;
+            border-radius:5px;
+          }
+      .bt_3 {
+            height:50px; 
+            width:500px; 
+            margin:10px 0;
+            background-color:#00FF00;
+            border-radius:5px;
+          }
+      .Tag{
+      font-size: 25px;
+      style: color:red;
+      }
+      .Header{
+      font-size: 30px;
+      style: color: black;
+      background-color: pink;
+      }
+       </style>
+       <meta name="viewport" content="width=device-width,user-scalable=0" charset="UTF-8">
+   </head>
+   <body onload="javascript:init()"> 
+   
+    <h1 class = 'Header'> DỰ ÁN GIÁM SÁT  </h1> 
+    
+    
+    <div    <p class="Tag" > Thông số  </div>
+  <div  <p class="Tag" > Nhiệt độ - Độ Ẩm - Gas </div>
+  <div  <p  </div>
+  
+  <div>
+    <button class="bt_2"style="color:red" id = "Server_T" >T </button>
+    <button class="bt_2"style="color:red" id = "Server_H" >H </button>
+    <button class="bt_2"style="color:red" id = "Server_Gas" >Gas </button>
+    </div>
+  
+
+    <div  <p class="Tag" > Điều Khiển Hệ Thống </div>
+    <div  <p  </div>
+  
+    <div>
+        <button id = "Alert" class="bt_1" onclick="alertCS()">Check Server</button>
+        <button id = "RL1_BT2" class="bt_1" onclick="sendData('Off1')">Tắt Quạt</button>
+    <button id = "RL1_BT3" class="bt_1" onclick="sendData('On1')">Bật Quạt</button>
+    </div>
+    <div>
+        <button id = "RL2_BT1" class="bt_1" onclick="sendData('SendData')">Gửi Thông Số</button>
+        <button id = "RL2_BT2" class="bt_1" onclick="sendData('Off2')">Tắt Đèn</button>
+    <button id = "RL2_BT2" class="bt_1" onclick="sendData('On2')">Bật Đèn</button>
+  </div>
+    
+    
+  <div    <p class="Tag" > Trạng Thái Hệ Thống </div>
+  <div  <p  </div>
+  
+  <div>
+    <button class="bt_2"style="color:red" id = "Server_Alert" > Nop </button>
+    </div>
+      
+      <script>
+        function alertCS(){
+            alert("Xác nhận button 1");
+        }
+  </script>
+  
+  <script>
+  function alerthight(){
+      alert(" Server Error");
+      }
+      </script>
+      
+    
+      <script>
+            var Socket;      //Khai báo biến Socket
+            function init(){
+              //Khởi tạo websocket
+              Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+              //Nhận broadcase từ server
+              Socket.onmessage = function(event){   
+                
+                
+                var JSONobj = JSON.parse(event.data);   //Tách dữ liệu json
+               
+                document.getElementById("Server_H").innerHTML = JSONobj.D1;
+                document.getElementById("Server_T").innerHTML = JSONobj.D2;
+                document.getElementById("Server_Gas").innerHTML = JSONobj.D3;
+                document.getElementById("Server_Alert").innerHTML = JSONobj.D4;
+               
+              }
+            }
+            //-----------Gửi dữ liệu lên Server-------------------
+            function sendData(data){
+              Socket.send(data);
+            }
+      </script>
+   </body> 
+  </html>
